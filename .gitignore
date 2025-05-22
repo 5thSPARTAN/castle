@@ -1,0 +1,50 @@
+# Build directories
+/build/
+/bin/
+/out/
+
+# CMake generated files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.cmake
+CTestTestfile.cmake
+Testing/
+install_manifest.txt
+
+# User-specific files (IDE, editor)
+/*.user
+/*.user.* 
+/*.suo
+/*.vcxproj*
+*.ncb
+*.opensdf
+*.sdf
+*.VC.db
+*.VC.VC.opendb
+
+# VSCode files
+.vscode/
+
+# Mac OS files
+.DS_Store
+
+# Linux swap files
+.*.swp
+
+# Logs and temp files
+*.log
+*.tmp
+
+# Executables and object files
+*.exe
+*.out
+*.app
+*.o
+*.obj
+
+# Backup files
+*~
+*.bak
+*.orig
