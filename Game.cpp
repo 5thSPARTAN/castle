@@ -51,6 +51,7 @@ void Game::playerWins(int playerNumber, deque<deque<int>> cardsPlayed){
                         if(!p.deckEmpty()){
                             p.cycleDeckToHand();
                         }
+                        p.winWithCard(wc);
                     }
                 }
             }
@@ -62,7 +63,16 @@ void Game::playerWins(int playerNumber, deque<deque<int>> cardsPlayed){
                 p.cycleWarDiscardToJail();
             }
             // check if losing card is in players hand
-                // START HERE
+            for(deque<int> cp: cardsPlayed){
+                if( cp[0] == p.getPlayerNumber()){
+                    p.handToJail(cp[1]);
+                    if(!p.deckEmpty()){
+                        p.cycleDeckToHand();
+                    }
+                }
+            }
+            for(int wc : winningCards){
+                p.loseToCard(wc);
             }
         }
     }
