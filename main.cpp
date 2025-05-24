@@ -97,7 +97,7 @@ int main(){
             battleInput.pop_back();
         }
     }
-    testGame.cardWins(battleOutput[0][0], battleOutput[0][1], cardsPlayed);
+    testGame.playerWins(battleOutput[0][0], cardsPlayed);
     cout << "Player " << battleOutput[0][0] << " won with " << battleOutput[0][1] << endl;
 
 }
