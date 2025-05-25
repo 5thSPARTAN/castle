@@ -41,6 +41,7 @@ public:
     bool handEmpty();
     bool warDiscardEmpty();
     bool warPlayedEmpty();
+    bool handContains(int card);
 
     void cycleDeckToHand();
     void cycleHandToJail();

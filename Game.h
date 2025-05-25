@@ -12,6 +12,10 @@ private:
     int startingHealth;
     int maxHealth;
     bool infiltrating;
+    int infiltratingPlayer;
+    int infiltratedPlayer;
+    int extractedCard;
+    int extractedCardLocation;
     bool war;
 public:
     Game();
@@ -21,6 +25,7 @@ public:
     int getNumberOfPlayers();
     int getStartingHealth();
     int getMaxHealth();
+    int getNumberOfPlayersLeft();
 
 
     deque<deque<int>> battle(deque<deque<int>> input);
@@ -33,8 +38,9 @@ public:
     void printGame();
 
     //for GameEnv
-    Observation toObservation();
+    Observation toObservation(int playerNumber);
     void applyAction(deque<int> action);
+    bool isWin(int player);
     bool isLose(int player);
     bool isOver();
     

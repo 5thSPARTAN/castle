@@ -13,6 +13,20 @@ void GameEnv::reset(){
     game_ = Game(players, startingHealth, maxHealth);
 }
 
-tuple<Observation, float, bool> GameEnv::step(int action){
+tuple<deque<Observation>, deque<float>, bool> GameEnv::step(deque<int> action){
+    game_.applyAction(action);
+    deque<Observation> obs;
+    obs.push_back(game_.toObservation(0));
+    obs.push_back(game_.toObservation(1));
+    obs.push_back(game_.toObservation(2));
+    obs.push_back(game_.toObservation(3));
+
+    deque<float> rewards;
+    rewards.push_back(static_cast<float>(game_.isWin(0)));
+    rewards.push_back(static_cast<float>(game_.isWin(1)));
+    rewards.push_back(static_cast<float>(game_.isWin(2)));
+    rewards.push_back(static_cast<float>(game_.isWin(3)));
+
+    return {obs, rewards, game_.isOver()};
     
 }

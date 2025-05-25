@@ -22,9 +22,7 @@ Player::Player(int p, int h, int mh){
     }
 }
 
-Player::~Player(){
-
-}
+Player::~Player(){}
 
 int Player::getPlayerNumber(){
     return playerNumber;
@@ -79,6 +77,15 @@ bool Player::warDiscardEmpty(){
 bool Player::warPlayedEmpty(){
     return warPlayed.empty();
 }
+bool Player::handContains(int card){
+    for(int c: hand){
+        if( c == card){
+            return true;
+        }
+    }
+    return false;
+}
+
 
 void Player::cycleDeckToHand(){
     hand.push_front(deck.back());
