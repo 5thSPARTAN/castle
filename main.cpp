@@ -3,7 +3,8 @@
 #include <iostream>
 
 int main(){
-    Game testGame(2, 5,5);
+    
+    Game testGame(2, 5,7);
     testGame.printGame();
     
     deque<deque<int>> battleInput;
@@ -23,7 +24,7 @@ int main(){
                 cout << "Your Deck: ";
             } else if( i == 1){
                 cout << "Your Jail: ";
-            } else if( i == 1){
+            } else if( i == 2){
                 cout << "Your Hand: ";
             } else{
                 cout << "Their Hand: ";
@@ -39,6 +40,7 @@ int main(){
         if(card != -1){
             testGame.infiltrate(0, temp, card);
         }
+        testGame.printGame();
         cout << "Please play new card Player 0: ";
         cin >> battleInput[0][1];
     }
@@ -56,7 +58,7 @@ int main(){
                 cout << "Your Deck: ";
             } else if( i == 1){
                 cout << "Your Jail: ";
-            } else if( i == 1){
+            } else if( i == 2){
                 cout << "Your Hand: ";
             } else{
                 cout << "Their Hand: ";
@@ -72,9 +74,19 @@ int main(){
         if(card != -1){
             testGame.infiltrate(1, temp, card);
         }
+        testGame.printGame();
         cout << "Please play new card Player 1: ";
         cin >> battleInput[1][1];
     }
+
+//    cout << battleInput.size() << endl;
+//    for( deque<int> i : battleInput){
+//        for( int j : i){
+//            cout << j << ", ";
+//        }
+//        cout << endl;
+//    }
+//    cout << endl;
 
     deque<deque<int>> battleOutput = testGame.battle(battleInput);
     deque<deque<int>> cardsPlayed;
@@ -97,7 +109,38 @@ int main(){
             battleInput.pop_back();
         }
     }
+
+//    cout << cardsPlayed.size() << endl;
+//    for( deque<int> i : cardsPlayed){
+//        for( int j : i){
+//            cout << j << ", ";
+//        }
+//        cout << endl;
+//    }
+//    cout << endl;
+
     testGame.playerWins(battleOutput[0][0], cardsPlayed);
-    cout << "Player " << battleOutput[0][0] << " won with " << battleOutput[0][1] << endl;
+    cout << "Player " << battleOutput[0][0] << " won with " << battleOutput[0][1] << endl << endl;
+    testGame.printGame();
+    
+    /*
+    cout << endl << endl;
+
+    Player testPlayer(2,5,7);
+    testPlayer.printPlayer();
+    cout << endl << endl;
+
+    testPlayer.damage();
+    testPlayer.printPlayer();
+    cout << endl << endl;
+
+    testPlayer.heal();
+    testPlayer.printPlayer();
+    cout << endl << endl;
+
+    testPlayer.discardHand();
+    testPlayer.printPlayer();
+    cout << endl << endl;
+    */
 
 }

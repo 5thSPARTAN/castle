@@ -1,5 +1,7 @@
 #include "Game.h"
 
+Game::Game(){}
+
 Game::Game(int numberOfPlayers, int startingHealth, int maxHealth){
     for( int i = 0; i < numberOfPlayers; i++){
         players.push_back(Player(i, startingHealth, maxHealth));
@@ -35,7 +37,7 @@ void Game::playerWins(int playerNumber, deque<deque<int>> cardsPlayed){
         }
     }
 
-    for(Player p : players){
+    for(Player &p : players){
         if(p.getPlayerNumber() == playerNumber){
             while(!p.warPlayedEmpty()){
                 p.cycleWarPlayedToDeck();
@@ -43,17 +45,17 @@ void Game::playerWins(int playerNumber, deque<deque<int>> cardsPlayed){
             while(!p.warDiscardEmpty()){
                 p.cycleWarDiscardToDeck();
             }
-            // check if winning card is in players hand
+            // check if winning cards are in players hand
             for(int wc : winningCards){
                 for( int pc : p.getHand()){
                     if( wc == pc){
                         p.handToDeck(wc);
                         if(!p.deckEmpty()){
                             p.cycleDeckToHand();
-                        }
-                        p.winWithCard(wc);
+                        }                        
                     }
                 }
+                p.winWithCard(wc);
             }
         } else {
             while(!p.warPlayedEmpty()){
@@ -76,28 +78,9 @@ void Game::playerWins(int playerNumber, deque<deque<int>> cardsPlayed){
             }
         }
     }
-    
 
-
-
-    for(deque<int> i : cardsPlayed){
-        if( i[0] == playerNumber ){
-            // check if has cards in war
-            
-            cardWins(i[0], i[1]);
-        }
-    }
 }
 
-void Game::cardWins(int playerNumber, int cardPlayed){
-    for(Player p: players){
-        if(p.getPlayerNumber() == playerNumber){
-            
-        } else {
-
-        }
-    }
-}
 
 deque<deque<int>> Game::getInfiltrateCards(int playerPlayed, int playerChosen){
     players[playerPlayed].handToJail(2);
@@ -107,7 +90,7 @@ deque<deque<int>> Game::getInfiltrateCards(int playerPlayed, int playerChosen){
     output.push_back(players[playerPlayed].getDeck());
     output.push_back(players[playerPlayed].getJail());
     output.push_back(players[playerPlayed].getHand());
-    output.push_back(players[playerChosen].getDeck());    
+    output.push_back(players[playerChosen].getHand());    
 
     return output;
 }

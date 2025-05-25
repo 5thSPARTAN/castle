@@ -151,6 +151,8 @@ void Player::winWithCard(int card){
             heal();
             break;
     }
+
+    return;
 }
 
 void Player::loseToCard(int card){
@@ -181,6 +183,7 @@ void Player::loseToCard(int card){
             damage();
             break;
     }
+
 }
 
 void Player::jailBreak(){

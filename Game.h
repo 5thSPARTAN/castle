@@ -3,6 +3,7 @@
 
 #include "Player.h"
 #include "GameUtils.h"
+#include "Observation.h"
 
 class Game{
 private:
@@ -10,6 +11,7 @@ private:
     int turnCounter;
     bool war;
 public:
+    Game();
     Game(int numberOfPlayers, int startingHealth, int maxHealth);
     ~Game();
 
@@ -20,9 +22,17 @@ public:
     void infiltrate( int playerPlayed, int playerChosen, int card);
 
     void playerWins(int playerNumber, deque<deque<int>> cardsPlayed);
-    void cardWins( int playerNumber, int cardPlayed);
 
     void printGame();
+
+    //for GameEnv
+    Observation toObservation();
+    void applyAction(deque<int> action);
+    bool isWin(int player);
+    bool isLose(int player);
+    bool isOver();
+    
+
 };
 
 #endif
