@@ -31,7 +31,11 @@ public:
     void damage(); // 1 damage
     void heal(); // 1 heal
     int getHealth();
+    int getDeckSize();
+    int getJailSize();
+    int getHandSize();
 
+    bool isLose();
     bool deckEmpty();
     bool jailEmpty();
     bool handEmpty();

@@ -46,10 +46,27 @@ void Player::heal(){
 int Player::getHealth(){
     return health;
 }
+int Player::getDeckSize(){
+    return deck.size();
+}
+int Player::getJailSize(){
+    return jail.size();
+}
+int Player::getHandSize(){
+    return hand.size();
+}
+
+bool Player::isLose(){
+    if( health <= 0){
+        return true;
+    } else if( deck.empty() && hand.empty()){
+        return true;
+    }
+    return false;
+}
 bool Player::deckEmpty(){
     return deck.empty();
 }
-
 bool Player::jailEmpty(){
     return jail.empty();
 }

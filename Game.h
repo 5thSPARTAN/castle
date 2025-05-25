@@ -8,19 +8,26 @@
 class Game{
 private:
     deque<Player> players;
-    int turnCounter;
+    int numberOfPlayers;
+    int startingHealth;
+    int maxHealth;
+    bool infiltrating;
     bool war;
 public:
     Game();
     Game(int numberOfPlayers, int startingHealth, int maxHealth);
     ~Game();
 
+    int getNumberOfPlayers();
+    int getStartingHealth();
+    int getMaxHealth();
+
+
     deque<deque<int>> battle(deque<deque<int>> input);
     
     // infiltrator specific functions
-    deque<deque<int>> getInfiltrateCards(int playerPlayed, int playerChosen); // also moves 2 to the jail
-    void infiltrate( int playerPlayed, int playerChosen, int card);
-
+    deque<int> infiltrate( int playerPlayed, int playerChosen); //output card #, location (deck(0), jail(1), hand(2))
+    void infiltrateSwap(int playerPlayed, int playerChosen, int card, int location);
     void playerWins(int playerNumber, deque<deque<int>> cardsPlayed);
 
     void printGame();
@@ -28,7 +35,6 @@ public:
     //for GameEnv
     Observation toObservation();
     void applyAction(deque<int> action);
-    bool isWin(int player);
     bool isLose(int player);
     bool isOver();
     

@@ -15,30 +15,27 @@ int main(){
     cin >> battleInput[0][1];
 
     while(battleInput[0][1] == 2){
-        int temp;
+        int chosenPlayer;
         cout << "Which player do you want to infiltrate: ";
-        cin >> temp;
-        deque<deque<int>> infiltrateCards = testGame.getInfiltrateCards( 0, temp);
-        for( int i = 0; i < 4; i++){
-            if(i == 0){
-                cout << "Your Deck: ";
-            } else if( i == 1){
-                cout << "Your Jail: ";
-            } else if( i == 2){
-                cout << "Your Hand: ";
-            } else{
-                cout << "Their Hand: ";
-            }
-            for(int j = 0; j < infiltrateCards[i].size(); j++){
-                cout << infiltrateCards[i][j] << ", ";
-            }
-            cout << endl;
+        cin >> chosenPlayer;
+        deque<int> dataExtracted = testGame.infiltrate(0, chosenPlayer);
+        cout << "You have pulled a " << dataExtracted[0] << " from Player " << chosenPlayer << "." << endl;
+        switch(dataExtracted[1]){
+            case 0:
+                cout << "It is currently in your deck." << endl;
+                break;
+            case 1:
+                cout << "It is currently in your jail." << endl;
+                break;
+            case 2:
+                cout << "It is currently in your hand." << endl;
+                break;
         }
-        int card;
-        cout << "What card do you want to take? (-1 if no card): ";
-        cin >> card;
-        if(card != -1){
-            testGame.infiltrate(0, temp, card);
+        int swapDecision;
+        cout << "Would you like to swap? 0 for no swap, 1 for swap: ";
+        cin >> swapDecision;
+        if(swapDecision == 1){
+            testGame.infiltrateSwap(0, chosenPlayer, dataExtracted[0], dataExtracted[1])
         }
         testGame.printGame();
         cout << "Please play new card Player 0: ";
@@ -49,30 +46,27 @@ int main(){
     cin >> battleInput[1][1];
 
     while(battleInput[1][1] == 2){
-        int temp;
+        int chosenPlayer;
         cout << "Which player do you want to infiltrate: ";
-        cin >> temp;
-        deque<deque<int>> infiltrateCards = testGame.getInfiltrateCards( 1, temp);
-        for( int i = 0; i < 4; i++){
-            if(i == 0){
-                cout << "Your Deck: ";
-            } else if( i == 1){
-                cout << "Your Jail: ";
-            } else if( i == 2){
-                cout << "Your Hand: ";
-            } else{
-                cout << "Their Hand: ";
-            }
-            for(int j = 0; j < infiltrateCards[i].size(); j++){
-                cout << infiltrateCards[i][j] << ", ";
-            }
-            cout << endl;
+        cin >> chosenPlayer;
+        deque<int> dataExtracted = testGame.infiltrate(1, chosenPlayer);
+        cout << "You have pulled a " << dataExtracted[0] << " from Player " << chosenPlayer << "." << endl;
+        switch(dataExtracted[1]){
+            case 0:
+                cout << "It is currently in your deck." << endl;
+                break;
+            case 1:
+                cout << "It is currently in your jail." << endl;
+                break;
+            case 2:
+                cout << "It is currently in your hand." << endl;
+                break;
         }
-        int card;
-        cout << "What card do you want to take? (-1 if no card): ";
-        cin >> card;
-        if(card != -1){
-            testGame.infiltrate(1, temp, card);
+        int swapDecision;
+        cout << "Would you like to swap? 0 for no swap, 1 for swap: ";
+        cin >> swapDecision;
+        if(swapDecision == 1){
+            testGame.infiltrateSwap(1, chosenPlayer, dataExtracted[0], dataExtracted[1]);
         }
         testGame.printGame();
         cout << "Please play new card Player 1: ";
