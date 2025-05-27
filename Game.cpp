@@ -125,7 +125,7 @@ deque<int> Game::infiltrate( int playerPlayed, int playerChosen){
             return {card, 2};
         }
     }
-
+    return {};
 }
 
 void Game::infiltrateSwap( int playerPlayed, int playerChosen, int card, int location){
@@ -190,7 +190,6 @@ Observation Game::toObservation(int playerNumber){
         for( int i = 1; i < 29; i++){
             output.actionMask.push_back(false);
         }
-        return output;
     } else if(infiltrating){
         if(infiltratingPlayer == playerNumber){
             output.actionMask.push_back(false);
@@ -206,13 +205,11 @@ Observation Game::toObservation(int playerNumber){
             for( int i = 14; i < 29; i++){
                 output.actionMask.push_back(false);
             }
-            return output;
         } else {
             output.actionMask.push_back(true);
             for( int i = 1; i < 29; i++){
                 output.actionMask.push_back(false);
             }
-            return output;
         }
     } else if(war){
         if( players[playerNumber].warDiscardEmpty() && players[playerNumber].warPlayedEmpty()){
@@ -254,8 +251,38 @@ Observation Game::toObservation(int playerNumber){
                 }
             }
         }
+    } else {
+        if(!players[playerNumber].isLose()){
+            for( int i = 0; i < 14; i++){
+                output.actionMask.push_back(false);
+            }
+            output.actionMask.push_back(players[playerNumber].handContains(3));
+            output.actionMask.push_back(players[playerNumber].handContains(4));
+            output.actionMask.push_back(players[playerNumber].handContains(5));
+            output.actionMask.push_back(players[playerNumber].handContains(6));
+            output.actionMask.push_back(players[playerNumber].handContains(7));
+            output.actionMask.push_back(players[playerNumber].handContains(8));
+            output.actionMask.push_back(players[playerNumber].handContains(9));
+            output.actionMask.push_back(players[playerNumber].handContains(10));
+            output.actionMask.push_back(players[playerNumber].handContains(11));
+            output.actionMask.push_back(players[playerNumber].handContains(12));
+            output.actionMask.push_back(players[playerNumber].handContains(13));
+            if( players[playerNumber].handContains(2) ){
+                for( int i = 0 ; i < 4; i ++){
+                    if(playerNumber == i || players[i].isLose()){
+                        output.actionMask.push_back(false);
+                    } else {
+                        output.actionMask.push_back(true);
+                    }
+                }
+            } else {
+                for( int i = 0; i < 4;i++){
+                    output.actionMask.push_back(false);
+                }
+            }
+        }
     }
-
+    return output;
 
 }
 
