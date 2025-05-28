@@ -22,6 +22,11 @@ int main(){
         for(Observation obs: get<0>(output)){
             actionList.push_back(randPlayer.pickAction(obs));
         }
+        cout << "actions: ";
+        for(int x : actionList){
+            cout << x << ", ";
+        }
+        cout << endl;
         output = testGame.step(actionList);
         printStepOutput(output);
     }
@@ -33,9 +38,9 @@ int main(){
 }
 
 void printStepOutput( tuple<deque<Observation>,deque<float>, bool> input){
+    printFeatures(get<0>(input)[0]);
     for( int i = 0; i < get<0>(input).size(); i++){
         cout << "Player " << i << endl;
-        printFeatures(get<0>(input)[i]);
         printActions(get<0>(input)[i]);
         cout << endl << endl;
     }
