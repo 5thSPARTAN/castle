@@ -1,5 +1,6 @@
 #include "GameEnv.h"
 #include "Player.h"
+#include "RandomPlayer.h"
 #include <iostream>
 
 void printStepOutput( tuple<deque<Observation>, deque<float>, bool> input);
@@ -11,8 +12,21 @@ int main(){
     GameEnv testGame(4,5,7);
     
     tuple<deque<Observation>, deque<float>, bool> output;
-    output = testGame.step({0,0,0,0});
+    RandomPlayer randPlayer;
+    deque<int> actionList = {{0,0,0,0}};
+
+    output = testGame.step(actionList);
     printStepOutput(output);
+    while(!get<2>(output)){
+        actionList = {};
+        for(Observation obs: get<0>(output)){
+            actionList.push_back(randPlayer.pickAction(obs));
+        }
+        output = testGame.step(actionList);
+        printStepOutput(output);
+    }
+    
+    cout << "Done" << endl;
 
     
 
