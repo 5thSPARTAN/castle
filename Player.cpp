@@ -215,6 +215,9 @@ void Player::jailBreak(){
         deck.insert(deck.begin(), jail.back());
         jail.pop_back();
     }
+    while(hand.size() < 3 && deck.size() != 0){
+        cycleDeckToHand();
+    }
 }
 void Player::discardHand(){
     for(int i = 0; i < 3; i++){
@@ -256,6 +259,9 @@ deque<int> Player::getJail(){
 }
 deque<int> Player::getHand(){
     return hand;
+}
+deque<int> Player::getWarPlayed(){
+    return warPlayed;
 }
 
 

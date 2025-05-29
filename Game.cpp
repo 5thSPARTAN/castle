@@ -105,6 +105,10 @@ void Game::playerWins(int playerNumber, deque<deque<int>> cardsPlayed){
 }
   
 deque<int> Game::infiltrate( int playerPlayed, int playerChosen){
+    // move 2 to jail
+    players[playerPlayed].handToJail(2);
+
+    
     random_device rd;
     mt19937 gen(rd());
     uniform_int_distribution<> dist(0, players[playerChosen].getHandSize()-1);
@@ -131,10 +135,16 @@ deque<int> Game::infiltrate( int playerPlayed, int playerChosen){
 void Game::infiltrateSwap( int playerPlayed, int playerChosen, int card, int location){
     if( location == 0){
         players[playerChosen].handToDeck(card);
+        if(!players[playerChosen].deckEmpty()){
+            players[playerChosen].cycleDeckToHand();
+        }
         players[playerPlayed].deckToHand(card);
         return;
     } else if( location == 1){
         players[playerChosen].handToJail(card);
+        if(!players[playerChosen].deckEmpty()){
+            players[playerChosen].cycleDeckToHand();
+        }
         players[playerPlayed].jailToHand(card);
         return;
     }
@@ -306,6 +316,9 @@ void Game::applyAction(deque<int> action){
                 }
             }
         }
+        while(players[infiltratingPlayer].getHandSize() < 3 && !players[infiltratingPlayer].deckEmpty()){
+            players[infiltratingPlayer].cycleDeckToHand();
+        }
         infiltrating = false;
     } else {
         deque<deque<int>> battleInput;
@@ -352,6 +365,7 @@ void Game::applyAction(deque<int> action){
                         deque<int> dataExtracted = infiltrate( i,0);
                         extractedCard = dataExtracted[0];
                         extractedCardLocation = dataExtracted[1];
+                        
                     }
                     return;
                 case 26:
@@ -384,8 +398,27 @@ void Game::applyAction(deque<int> action){
                         extractedCardLocation = dataExtracted[1];
                     }
                     return;
+                default:                    
+                    break;
             }
         }
+        cout << "we" << endl;
+        deque<deque<int>> battleOutput;
+        if( battleInput.size() == 0){
+            return;
+        } else if( battleInput.size() == 1){
+            battleOutput = battleInput;   
+        } else {
+            battleOutput = battle(battleInput);
+        }
+        cout << "made" << endl;
+        if(battleOutput.size() > 1){
+            return;
+        }
+        for( int card: players[battleOutput[0][0]].getWarPlayed()){
+            battleInput.push_back({battleOutput[0][0], card});
+        }
+        playerWins(battleOutput[0][0], battleInput);
     }
 }
 bool Game::isWin(int player){

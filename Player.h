@@ -69,6 +69,7 @@ public:
     deque<int> getDeck();
     deque<int> getJail();
     deque<int> getHand();
+    deque<int> getWarPlayed();
 
     void printPlayer();
 

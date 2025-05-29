@@ -13,7 +13,7 @@ int main(){
     
     tuple<deque<Observation>, deque<float>, bool> output;
     RandomPlayer randPlayer;
-    deque<int> actionList = {{0,0,0,0}};
+    deque<int> actionList = {0,0,0,0};
 
     output = testGame.step(actionList);
     printStepOutput(output);
