@@ -78,8 +78,8 @@ bool Player::warPlayedEmpty(){
     return warPlayed.empty();
 }
 bool Player::handContains(int card){
-    for(int c: hand){
-        if( c == card){
+    for(int i = 0; i < hand.size(); i++){
+        if( hand[i] == card){
             return true;
         }
     }
@@ -230,6 +230,7 @@ void Player::discardHand(){
     }
     return;
 }
+
 void Player::war(int card){
     int discardCount = 0;
     handToWarPlayed(card);
@@ -239,7 +240,7 @@ void Player::war(int card){
     }
 
     while(discardCount < 3){
-        if(deck.empty() && hand.size() == 1){
+        if(deck.empty() && hand.size() <= 1){
             discardCount = 3;
         }
         else{

@@ -16,7 +16,7 @@ int main(){
     deque<int> actionList = {0,0,0,0};
 
     output = testGame.step(actionList);
-    printStepOutput(output);
+    //printStepOutput(output);
     while(!get<2>(output)){
         actionList = {};
         for(Observation obs: get<0>(output)){
@@ -65,9 +65,10 @@ void printFeatures(Observation obs){
     cout << "PLAYER 3 CARDS IN DECK: " << obs.features[16] << endl; 
     cout << "PLAYER 3 CARDS IN JAIL: " << obs.features[17] << endl; 
     cout << "PLAYER 3 CARDS IN HAND: " << obs.features[18] << endl; 
-    cout << "INFILTRATING          : " << obs.features[19] << endl; 
-    cout << "INFILTRATED PLAYER    : " << obs.features[20] << endl; 
-    cout << "CARD PULLED LOCATION  : " << obs.features[21] << endl; 
+    cout << "WAR                   : " << obs.features[19] << endl; 
+    cout << "INFILTRATING          : " << obs.features[20] << endl; 
+    cout << "INFILTRATED PLAYER    : " << obs.features[21] << endl; 
+    cout << "CARD PULLED LOCATION  : " << obs.features[22] << endl; 
 }
 void printActions(Observation obs){
     if(obs.actionMask[0] == true){ cout << "DO NOTHING (dead/war/infiltrating)" << endl;}

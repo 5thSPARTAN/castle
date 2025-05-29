@@ -26,7 +26,7 @@ int Game::getMaxHealth(){
 }
 int Game::getNumberOfPlayersLeft(){
     int count = 0;
-    for( Player p: players){
+    for( Player& p: players){
         if(!p.isLose()){
             count++;
         }
@@ -39,7 +39,7 @@ deque<deque<int>> Game::battle(deque<deque<int>> input){
     deque<deque<int>> winners = findWinners(input);
     if( winners.size() > 1){
         // war has occured
-        for( deque<int> i : winners){
+        for( deque<int>& i : winners){
             players[i[0]].war(winners[0][1]);
         }
         war = true;
@@ -54,7 +54,7 @@ deque<deque<int>> Game::battle(deque<deque<int>> input){
 
 void Game::playerWins(int playerNumber, deque<deque<int>> cardsPlayed){
     deque<int> winningCards;
-    for(deque<int> i : cardsPlayed){
+    for(deque<int>& i : cardsPlayed){
         if(i[0] == playerNumber){
             winningCards.push_back(i[1]);
         }
@@ -69,8 +69,8 @@ void Game::playerWins(int playerNumber, deque<deque<int>> cardsPlayed){
                 p.cycleWarDiscardToDeck();
             }
             // check if winning cards are in players hand
-            for(int wc : winningCards){
-                for( int pc : p.getHand()){
+            for(int& wc : winningCards){
+                for( int& pc : p.getHand()){
                     if( wc == pc){
                         p.handToDeck(wc);
                         if(!p.deckEmpty()){
@@ -88,7 +88,7 @@ void Game::playerWins(int playerNumber, deque<deque<int>> cardsPlayed){
                 p.cycleWarDiscardToJail();
             }
             // check if losing card is in players hand
-            for(deque<int> cp: cardsPlayed){
+            for(deque<int>& cp: cardsPlayed){
                 if( cp[0] == p.getPlayerNumber()){
                     p.handToJail(cp[1]);
                     if(!p.deckEmpty()){
@@ -96,7 +96,7 @@ void Game::playerWins(int playerNumber, deque<deque<int>> cardsPlayed){
                     }
                 }
             }
-            for(int wc : winningCards){
+            for(int& wc : winningCards){
                 p.loseToCard(wc);
             }
         }
@@ -114,17 +114,17 @@ deque<int> Game::infiltrate( int playerPlayed, int playerChosen){
     uniform_int_distribution<> dist(0, players[playerChosen].getHandSize()-1);
     int card = players[playerChosen].getHand()[dist(gen)];
 
-    for( int i : players[playerPlayed].getDeck()){
+    for( int& i : players[playerPlayed].getDeck()){
         if( card == i){
             return {card, 0};
         }
     }
-    for( int i : players[playerPlayed].getJail()){
+    for( int& i : players[playerPlayed].getJail()){
         if( card == i){
             return {card, 1};
         }
     }
-    for( int i : players[playerPlayed].getHand()){
+    for( int& i : players[playerPlayed].getHand()){
         if( card == i){
             return {card, 2};
         }
@@ -179,6 +179,7 @@ Observation Game::toObservation(int playerNumber){
     output.features.push_back(static_cast<float>(players[3].getDeckSize()));
     output.features.push_back(static_cast<float>(players[3].getJailSize()));
     output.features.push_back(static_cast<float>(players[3].getHandSize()));
+    output.features.push_back(static_cast<float>(war));
     output.features.push_back(static_cast<float>(infiltrating));
 
     if(infiltrating){
@@ -300,7 +301,7 @@ void Game::applyAction(deque<int> action){
     if(infiltrating){
         if( action[infiltratingPlayer] <=13 && action[infiltratingPlayer] >=2 ){
             int location = -1;
-            for( int j : players[infiltratingPlayer].getDeck()){
+            for( int& j : players[infiltratingPlayer].getDeck()){
                 if( j == action[infiltratingPlayer]){
                     location = 0;
                     infiltrateSwap(infiltratingPlayer, infiltratedPlayer, action[infiltratingPlayer], 0);
@@ -308,7 +309,7 @@ void Game::applyAction(deque<int> action){
                 }
             }
             if( location != 0 ){
-                for( int j : players[infiltratingPlayer].getJail()){
+                for( int& j : players[infiltratingPlayer].getJail()){
                     if( j == action[infiltratingPlayer]){
                         infiltrateSwap(infiltratingPlayer, infiltratedPlayer, action[infiltratingPlayer], 1);
                         break;
@@ -402,7 +403,6 @@ void Game::applyAction(deque<int> action){
                     break;
             }
         }
-        cout << "we" << endl;
         deque<deque<int>> battleOutput;
         if( battleInput.size() == 0){
             return;
@@ -411,11 +411,10 @@ void Game::applyAction(deque<int> action){
         } else {
             battleOutput = battle(battleInput);
         }
-        cout << "made" << endl;
         if(battleOutput.size() > 1){
             return;
         }
-        for( int card: players[battleOutput[0][0]].getWarPlayed()){
+        for( int& card: players[battleOutput[0][0]].getWarPlayed()){
             battleInput.push_back({battleOutput[0][0], card});
         }
         playerWins(battleOutput[0][0], battleInput);
@@ -440,7 +439,7 @@ bool Game::isLose(int player){
 }
 bool Game::isOver(){
     int count = 0;
-    for( Player p :players){
+    for( Player& p :players){
         if(p.isLose() == true){
             count++;
         }
