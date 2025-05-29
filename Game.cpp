@@ -10,6 +10,10 @@ Game::Game(int np, int sh, int mh){
         players.push_back(Player(i, startingHealth, maxHealth));
     }
     infiltrating = false;
+    infiltratedPlayer = -1;
+    infiltratingPlayer = -1;
+    extractedCard = -1;
+    extractedCardLocation = -1;
     war = false;
 }
 
@@ -112,24 +116,28 @@ deque<int> Game::infiltrate( int playerPlayed, int playerChosen){
     random_device rd;
     mt19937 gen(rd());
     uniform_int_distribution<> dist(0, players[playerChosen].getHandSize()-1);
-    int card = players[playerChosen].getHand()[dist(gen)];
-
-    for( int& i : players[playerPlayed].getDeck()){
-        if( card == i){
-            return {card, 0};
+    
+    deque<int> otherHand = players[playerChosen].getHand();
+    if( otherHand.size() > 0){
+        int card = otherHand[dist(gen)];
+        for( int& i : players[playerPlayed].getDeck()){
+            if( card == i){
+                return {card, 0};
+            }
         }
-    }
-    for( int& i : players[playerPlayed].getJail()){
-        if( card == i){
-            return {card, 1};
+        for( int& i : players[playerPlayed].getJail()){
+            if( card == i){
+                return {card, 1};
+            }
         }
-    }
-    for( int& i : players[playerPlayed].getHand()){
-        if( card == i){
-            return {card, 2};
+        for( int& i : players[playerPlayed].getHand()){
+            if( card == i){
+                return {card, 2};
+            }
         }
+    
     }
-    return {};
+    return {-1,-1};
 }
 
 void Game::infiltrateSwap( int playerPlayed, int playerChosen, int card, int location){
@@ -160,43 +168,45 @@ void Game::printGame(){
 Observation Game::toObservation(int playerNumber){
     Observation output;
     // features
-    output.features.push_back(static_cast<float>(playerNumber));
-    output.features.push_back(static_cast<float>(getNumberOfPlayersLeft()));
-    output.features.push_back(static_cast<float>(getMaxHealth()));
-    output.features.push_back(static_cast<float>(players[0].getHealth()));
-    output.features.push_back(static_cast<float>(players[0].getDeckSize()));
-    output.features.push_back(static_cast<float>(players[0].getJailSize()));
-    output.features.push_back(static_cast<float>(players[0].getHandSize()));
-    output.features.push_back(static_cast<float>(players[1].getHealth()));
-    output.features.push_back(static_cast<float>(players[1].getDeckSize()));
-    output.features.push_back(static_cast<float>(players[1].getJailSize()));
-    output.features.push_back(static_cast<float>(players[1].getHandSize()));
-    output.features.push_back(static_cast<float>(players[2].getHealth()));
-    output.features.push_back(static_cast<float>(players[2].getDeckSize()));
-    output.features.push_back(static_cast<float>(players[2].getJailSize()));
-    output.features.push_back(static_cast<float>(players[2].getHandSize()));
-    output.features.push_back(static_cast<float>(players[3].getHealth()));
-    output.features.push_back(static_cast<float>(players[3].getDeckSize()));
-    output.features.push_back(static_cast<float>(players[3].getJailSize()));
-    output.features.push_back(static_cast<float>(players[3].getHandSize()));
-    output.features.push_back(static_cast<float>(war));
-    output.features.push_back(static_cast<float>(infiltrating));
+    output.features.resize(23, 0.0f);
+    output.features[0] = static_cast<float>(playerNumber);
+    output.features[1] = static_cast<float>(getNumberOfPlayersLeft());
+    output.features[2] = static_cast<float>(getMaxHealth());
+    output.features[3] = static_cast<float>(players[0].getHealth());
+    output.features[4] = static_cast<float>(players[0].getDeckSize());
+    output.features[5] = static_cast<float>(players[0].getJailSize());
+    output.features[6] = static_cast<float>(players[0].getHandSize());
+    output.features[7] = static_cast<float>(players[1].getHealth());
+    output.features[8] = static_cast<float>(players[1].getDeckSize());
+    output.features[9] = static_cast<float>(players[1].getJailSize());
+    output.features[10] = static_cast<float>(players[1].getHandSize());
+    output.features[11] = static_cast<float>(players[2].getHealth());
+    output.features[12] = static_cast<float>(players[2].getDeckSize());
+    output.features[13] = static_cast<float>(players[2].getJailSize());
+    output.features[14] = static_cast<float>(players[2].getHandSize());
+    output.features[15] = static_cast<float>(players[3].getHealth());
+    output.features[16] = static_cast<float>(players[3].getDeckSize());
+    output.features[17] = static_cast<float>(players[3].getJailSize());
+    output.features[18] = static_cast<float>(players[3].getHandSize());
+    output.features[19] = static_cast<float>(war);
+    output.features[20] = static_cast<float>(infiltrating);
 
     if(infiltrating){
-        output.features.push_back(static_cast<float>(infiltratedPlayer));
+        output.features[21] = static_cast<float>(infiltratedPlayer);
     } else {
-        output.features.push_back(static_cast<float>(-1));
+        output.features[21] = static_cast<float>(-1);
     }
     
     if(infiltrating){
-        output.features.push_back(static_cast<float>(extractedCardLocation));
+        output.features[22] = static_cast<float>(extractedCardLocation);
     } else {
-        output.features.push_back(static_cast<float>(-1));
+        output.features[22] = static_cast<float>(-1);
     }
 
 
     // action mask
     if(players[playerNumber].isLose()){
+
         output.actionMask.push_back(true);
         for( int i = 1; i < 29; i++){
             output.actionMask.push_back(false);
@@ -366,7 +376,6 @@ void Game::applyAction(deque<int> action){
                         deque<int> dataExtracted = infiltrate( i,0);
                         extractedCard = dataExtracted[0];
                         extractedCardLocation = dataExtracted[1];
-                        
                     }
                     return;
                 case 26:
@@ -405,9 +414,11 @@ void Game::applyAction(deque<int> action){
         }
         deque<deque<int>> battleOutput;
         if( battleInput.size() == 0){
+            war = false;
             return;
         } else if( battleInput.size() == 1){
-            battleOutput = battleInput;   
+            battleOutput = battleInput;
+            war = false; 
         } else {
             battleOutput = battle(battleInput);
         }

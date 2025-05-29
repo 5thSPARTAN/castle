@@ -22,16 +22,16 @@ int main(){
         for(Observation obs: get<0>(output)){
             actionList.push_back(randPlayer.pickAction(obs));
         }
-        cout << "actions: ";
-        for(int x : actionList){
-            cout << x << ", ";
-        }
-        cout << endl;
+//        cout << "actions: ";
+//        for(int x : actionList){
+//            cout << x << ", ";
+//        }
+//        cout << endl;
         output = testGame.step(actionList);
-        printStepOutput(output);
+        //printStepOutput(output);
     }
     
-    cout << "Done" << endl;
+//    cout << "Done" << endl;
 
     
 
