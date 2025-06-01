@@ -1,5 +1,4 @@
 #include "GameEnv.h"
-#include <pybind11>
 
 GameEnv::GameEnv(int p, int s, int m){
     players = p;
