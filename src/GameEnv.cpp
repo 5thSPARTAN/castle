@@ -1,4 +1,4 @@
-#include <pybind11>
+#include <pybind11/pybind11.h>
 #include "GameEnv.h"
 
 GameEnv::GameEnv(int p, int s, int m){
