@@ -1,4 +1,5 @@
 #include "GameEnv.h"
+#include <pybind11>
 
 GameEnv::GameEnv(int p, int s, int m){
     players = p;
@@ -9,8 +10,13 @@ GameEnv::GameEnv(int p, int s, int m){
 
 GameEnv::~GameEnv(){}
 
-void GameEnv::reset(){
+deque<Observation> GameEnv::reset(){
     game_ = Game(players, startingHealth, maxHealth);
+    deque<Observation> obs;
+    obs.push_back(game_.toObservation(0));
+    obs.push_back(game_.toObservation(1));
+    obs.push_back(game_.toObservation(2));
+    obs.push_back(game_.toObservation(3));
 }
 
 tuple<deque<Observation>, deque<float>, bool> GameEnv::step(deque<int> action){

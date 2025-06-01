@@ -13,7 +13,7 @@ public:
     ~GameEnv();
 
 
-    void reset();
+    deque<Observation> reset();
     tuple<deque<Observation>, deque<float>, bool> step(deque<int> action);
 
 };
