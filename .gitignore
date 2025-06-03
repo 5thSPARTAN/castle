@@ -3,6 +3,9 @@
 /bin/
 /out/
 
+# Build folder
+/*.so
+
 # CMake generated files
 CMakeFiles/
 CMakeCache.txt
