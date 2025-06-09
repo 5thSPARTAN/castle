@@ -71,33 +71,33 @@ void printFeatures(Observation obs){
     cout << "CARD PULLED LOCATION  : " << obs.features[22] << endl; 
 }
 void printActions(Observation obs){
-    if(obs.actionMask[0] == true){ cout << "DO NOTHING (dead/war/infiltrating)" << endl;}
-    if(obs.actionMask[1] == true){ cout << "(2) PLAYER SWAPS NOTHING" << endl;}
-    if(obs.actionMask[2] == true){ cout << "(2) PLAYER SWAPS 2" << endl;}
-    if(obs.actionMask[3] == true){ cout << "(2) PLAYER SWAPS 3" << endl;}
-    if(obs.actionMask[4] == true){ cout << "(2) PLAYER SWAPS 4" << endl;}
-    if(obs.actionMask[5] == true){ cout << "(2) PLAYER SWAPS 5" << endl;}
-    if(obs.actionMask[6] == true){ cout << "(2) PLAYER SWAPS 6" << endl;}
-    if(obs.actionMask[7] == true){ cout << "(2) PLAYER SWAPS 7" << endl;}
-    if(obs.actionMask[8] == true){ cout << "(2) PLAYER SWAPS 8" << endl;}
-    if(obs.actionMask[9] == true){ cout << "(2) PLAYER SWAPS 9" << endl;}
-    if(obs.actionMask[10] == true){cout << "(2) PLAYER SWAPS 10" << endl;}
-    if(obs.actionMask[11] == true){cout << "(2) PLAYER SWAPS 11" << endl;}
-    if(obs.actionMask[12] == true){cout << "(2) PLAYER SWAPS 12" << endl;}
-    if(obs.actionMask[13] == true){cout << "(2) PLAYER SWAPS 13" << endl;}
-    if(obs.actionMask[14] == true){cout << "PLAYER PLAYS 3 " << endl;}
-    if(obs.actionMask[15] == true){cout << "PLAYER PLAYS 4" << endl;}
-    if(obs.actionMask[16] == true){cout << "PLAYER PLAYS 5" << endl;}
-    if(obs.actionMask[17] == true){cout << "PLAYER PLAYS 6" << endl;}
-    if(obs.actionMask[18] == true){cout << "PLAYER PLAYS 7" << endl;}
-    if(obs.actionMask[19] == true){cout << "PLAYER PLAYS 8" << endl;}
-    if(obs.actionMask[20] == true){cout << "PLAYER PLAYS 9" << endl;}
-    if(obs.actionMask[21] == true){cout << "PLAYER PLAYS 10" << endl;}
-    if(obs.actionMask[22] == true){cout << "PLAYER PLAYS 11" << endl;}
-    if(obs.actionMask[23] == true){cout << "PLAYER PLAYS 12" << endl;}
-    if(obs.actionMask[24] == true){cout << "PLAYER PLAYS 13" << endl;}
-    if(obs.actionMask[25] == true){cout << "PLAYER PLAYS 2 ON PLAYER 0" << endl;}
-    if(obs.actionMask[26] == true){cout << "PLAYER PLAYS 2 ON PLAYER 1" << endl;}
-    if(obs.actionMask[27] == true){cout << "PLAYER PLAYS 2 ON PLAYER 2" << endl;}
-    if(obs.actionMask[28] == true){cout << "PLAYER PLAYS 2 ON PLAYER 3" << endl;}
+    if(obs.actionMask[0]){ cout << "DO NOTHING (dead/war/infiltrating)" << endl;}
+    if(obs.actionMask[1]){ cout << "(2) PLAYER SWAPS NOTHING" << endl;}
+    if(obs.actionMask[2]){ cout << "(2) PLAYER SWAPS 2" << endl;}
+    if(obs.actionMask[3]){ cout << "(2) PLAYER SWAPS 3" << endl;}
+    if(obs.actionMask[4]){ cout << "(2) PLAYER SWAPS 4" << endl;}
+    if(obs.actionMask[5]){ cout << "(2) PLAYER SWAPS 5" << endl;}
+    if(obs.actionMask[6]){ cout << "(2) PLAYER SWAPS 6" << endl;}
+    if(obs.actionMask[7]){ cout << "(2) PLAYER SWAPS 7" << endl;}
+    if(obs.actionMask[8]){ cout << "(2) PLAYER SWAPS 8" << endl;}
+    if(obs.actionMask[9]){ cout << "(2) PLAYER SWAPS 9" << endl;}
+    if(obs.actionMask[10]){cout << "(2) PLAYER SWAPS 10" << endl;}
+    if(obs.actionMask[11]){cout << "(2) PLAYER SWAPS 11" << endl;}
+    if(obs.actionMask[12]){cout << "(2) PLAYER SWAPS 12" << endl;}
+    if(obs.actionMask[13]){cout << "(2) PLAYER SWAPS 13" << endl;}
+    if(obs.actionMask[14]){cout << "PLAYER PLAYS 3 " << endl;}
+    if(obs.actionMask[15]){cout << "PLAYER PLAYS 4" << endl;}
+    if(obs.actionMask[16]){cout << "PLAYER PLAYS 5" << endl;}
+    if(obs.actionMask[17]){cout << "PLAYER PLAYS 6" << endl;}
+    if(obs.actionMask[18]){cout << "PLAYER PLAYS 7" << endl;}
+    if(obs.actionMask[19]){cout << "PLAYER PLAYS 8" << endl;}
+    if(obs.actionMask[20]){cout << "PLAYER PLAYS 9" << endl;}
+    if(obs.actionMask[21]){cout << "PLAYER PLAYS 10" << endl;}
+    if(obs.actionMask[22]){cout << "PLAYER PLAYS 11" << endl;}
+    if(obs.actionMask[23]){cout << "PLAYER PLAYS 12" << endl;}
+    if(obs.actionMask[24]){cout << "PLAYER PLAYS 13" << endl;}
+    if(obs.actionMask[25]){cout << "PLAYER PLAYS 2 ON PLAYER 0" << endl;}
+    if(obs.actionMask[26]){cout << "PLAYER PLAYS 2 ON PLAYER 1" << endl;}
+    if(obs.actionMask[27]){cout << "PLAYER PLAYS 2 ON PLAYER 2" << endl;}
+    if(obs.actionMask[28]){cout << "PLAYER PLAYS 2 ON PLAYER 3" << endl;}
 }

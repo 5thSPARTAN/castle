@@ -13,75 +13,77 @@ deque<int> Player::shuffleDeck(){
 
 // Input player, health
 Player::Player(int p, int h, int mh) : playerNumber(p), maxHealth(mh), deck(shuffleDeck()){
-    if( mh >= h)
+    if( mh >= h){
         health = h;
-    else
+    }
+    else{
         health = mh;
-
+    }
+    
+    #pragma unroll
     for(int i = 0; i < 3; i++){
         hand.push_back(deck.back());
         deck.pop_back();
     }
 }
 
-Player::~Player(){}
+Player::~Player() = default;
 
-int Player::getPlayerNumber(){
+int Player::getPlayerNumber() const{
     return playerNumber;
 }
-int Player::getPlayerHealth(){
+int Player::getPlayerHealth() const{
     return health;
 }
 
 void Player::damage(){
     health--;
-    return;
 } // 1 damage
 void Player::heal(){
     if(health < maxHealth){
         health++;
     }
-    return;
 } // 1 heal
-int Player::getHealth(){
+int Player::getHealth() const{
     return health;
 }
-int Player::getDeckSize(){
-    return deck.size();
+int Player::getDeckSize() const{
+    return static_cast<int>(deck.size());
 }
-int Player::getJailSize(){
-    return jail.size();
+int Player::getJailSize() const{
+    return static_cast<int>(jail.size());
 }
-int Player::getHandSize(){
-    return hand.size();
+int Player::getHandSize() const{
+    return static_cast<int>(hand.size());
 }
 
-bool Player::isLose(){
+bool Player::isLose() const{
     if( health <= 0){
         return true;
-    } else if( deck.empty() && hand.empty()){
+    }
+    if( deck.empty() && hand.empty()){
         return true;
     }
     return false;
 }
-bool Player::deckEmpty(){
+bool Player::deckEmpty() const{
     return deck.empty();
 }
-bool Player::jailEmpty(){
+bool Player::jailEmpty() const{
     return jail.empty();
 }
-bool Player::handEmpty(){
+bool Player::handEmpty() const{
     return hand.empty();
 }
-bool Player::warDiscardEmpty(){
+bool Player::warDiscardEmpty() const{
     return warDiscard.empty();
 }
-bool Player::warPlayedEmpty(){
+bool Player::warPlayedEmpty() const{
     return warPlayed.empty();
 }
-bool Player::handContains(int card){
-    for(int i = 0; i < hand.size(); i++){
-        if( hand[i] == card){
+bool Player::handContains(int card) const{    
+    for(const int &c : hand ){
+        if( c == card){
             return true;
         }
     }
@@ -92,17 +94,14 @@ bool Player::handContains(int card){
 void Player::cycleDeckToHand(){
     hand.push_front(deck.back());
     deck.pop_back();
-    return;
 }
 void Player::cycleHandToJail(){
     jail.push_front(hand.back());
     hand.pop_back();
-    return;
 }
 void Player::cycleHandToWarDiscard(){
     warDiscard.push_front(hand.back());
     hand.pop_back();
-    return;
 }
 void Player::cycleWarDiscardToDeck(){
     deck.push_front(warDiscard.back());
@@ -123,27 +122,22 @@ void Player::cycleWarPlayedToJail(){
 void Player::deckToHand(int card){
     hand.push_front(card);
     deck.erase(remove(deck.begin(),deck.end(),card), deck.end());
-    return;
 }
 void Player::jailToHand(int card){
     hand.push_front(card);
     jail.erase(remove(jail.begin(),jail.end(),card), jail.end());
-    return;
 }
 void Player::handToDeck(int card){
     deck.push_front(card);
     hand.erase(remove(hand.begin(),hand.end(),card), hand.end());
-    return;
 }
 void Player::handToJail(int card){
     jail.push_front(card);
     hand.erase(remove(hand.begin(),hand.end(),card), hand.end());
-    return;
 }
 void Player::handToWarPlayed(int card){
     warPlayed.push_front(card);
     hand.erase(remove(hand.begin(),hand.end(),card), hand.end());
-    return;
 }
 
 void Player::winWithCard(int card){
@@ -176,9 +170,10 @@ void Player::winWithCard(int card){
             jailBreak();
             heal();
             break;
+        default:
+            throw invalid_argument("Card not in range - Player::winWithCard()");
+            break;
     }
-
-    return;
 }
 
 void Player::loseToCard(int card){
@@ -208,20 +203,23 @@ void Player::loseToCard(int card){
             damage();
             damage();
             break;
+        default:
+            throw invalid_argument("Card not in range - Player::loseWithCard()");
+            break;
     }
-
 }
 
 void Player::jailBreak(){
-    while(jail.size() != 0){
+    while(!jail.empty()){
         deck.insert(deck.begin(), jail.back());
         jail.pop_back();
     }
-    while(hand.size() < 3 && deck.size() != 0){
+    while(hand.size() < 3 && !deck.empty()){
         cycleDeckToHand();
     }
 }
 void Player::discardHand(){
+    #pragma unroll
     for(int i = 0; i < 3; i++){
         if(!deckEmpty()){
             cycleDeckToHand();
@@ -230,7 +228,6 @@ void Player::discardHand(){
             cycleHandToJail();
         }
     }
-    return;
 }
 
 void Player::war(int card){
@@ -254,21 +251,21 @@ void Player::war(int card){
         }
     }
 }
-deque<int> Player::getDeck(){
+deque<int> Player::getDeck() const{
     return deck;
 }
-deque<int> Player::getJail(){
+deque<int> Player::getJail() const{
     return jail;
 }
-deque<int> Player::getHand(){
+deque<int> Player::getHand() const{
     return hand;
 }
-deque<int> Player::getWarPlayed(){
+deque<int> Player::getWarPlayed() const{
     return warPlayed;
 }
 
-
-void Player::printPlayer(){
+/* for testing 
+void Player::printPlayer() const{
     cout << "Player " << playerNumber << endl;
     cout << "Health: " << health << endl;
        
@@ -302,3 +299,4 @@ void Player::printPlayer(){
     }
     cout << endl;
 }
+*/

@@ -1,36 +1,37 @@
 #include "Game.h"
 
-Game::Game(){}
+Game::Game() = default;
 
-Game::Game(int np, int sh, int mh){
-    numberOfPlayers = np;
-    startingHealth = sh;
-    maxHealth = mh;
+Game::Game(int np, int sh, int mh): 
+    numberOfPlayers(np), 
+    startingHealth(sh), 
+    maxHealth(mh), 
+    infiltrating(false), 
+    infiltratingPlayer(-1),
+    infiltratedPlayer(-1),
+    extractedCard(-1),
+    extractedCardLocation(-1),
+    war(false)
+    {    
     for( int i = 0; i < numberOfPlayers; i++){
         players.push_back(Player(i, startingHealth, maxHealth));
     }
-    infiltrating = false;
-    infiltratedPlayer = -1;
-    infiltratingPlayer = -1;
-    extractedCard = -1;
-    extractedCardLocation = -1;
-    war = false;
 }
 
-Game::~Game(){}
+Game::~Game() = default;
 
-int Game::getNumberOfPlayers(){
+int Game::getNumberOfPlayers() const{
     return numberOfPlayers;
 }
-int Game::getStartingHealth(){
+int Game::getStartingHealth() const{
     return startingHealth;
 }
-int Game::getMaxHealth(){
+int Game::getMaxHealth() const{
     return maxHealth;
 }
-int Game::getNumberOfPlayersLeft(){
+int Game::getNumberOfPlayersLeft() const{
     int count = 0;
-    for( Player& p: players){
+    for(const Player& p: players){
         if(!p.isLose()){
             count++;
         }
@@ -49,11 +50,8 @@ deque<deque<int>> Game::battle(deque<deque<int>> input){
         war = true;
         return winners;
     }
-    else{
-        war = false;
-        return winners;
-    }
-
+    war = false;
+    return winners;
 }
 
 void Game::playerWins(int playerNumber, deque<deque<int>> cardsPlayed){
@@ -73,8 +71,8 @@ void Game::playerWins(int playerNumber, deque<deque<int>> cardsPlayed){
                 p.cycleWarDiscardToDeck();
             }
             // check if winning cards are in players hand
-            for(int& wc : winningCards){
-                for( int& pc : p.getHand()){
+            for(const int& wc : winningCards){
+                for(const int& pc : p.getHand()){
                     if( wc == pc){
                         p.handToDeck(wc);
                         if(!p.deckEmpty()){
@@ -118,19 +116,19 @@ deque<int> Game::infiltrate( int playerPlayed, int playerChosen){
     uniform_int_distribution<> dist(0, players[playerChosen].getHandSize()-1);
     
     deque<int> otherHand = players[playerChosen].getHand();
-    if( otherHand.size() > 0){
-        int card = otherHand[dist(gen)];
-        for( int& i : players[playerPlayed].getDeck()){
+    if(!otherHand.empty()){
+        const int card = otherHand[dist(gen)];
+        for(const int& i : players[playerPlayed].getDeck()){
             if( card == i){
                 return {card, 0};
             }
         }
-        for( int& i : players[playerPlayed].getJail()){
+        for(const int& i : players[playerPlayed].getJail()){
             if( card == i){
                 return {card, 1};
             }
         }
-        for( int& i : players[playerPlayed].getHand()){
+        for(const int& i : players[playerPlayed].getHand()){
             if( card == i){
                 return {card, 2};
             }
@@ -147,28 +145,21 @@ void Game::infiltrateSwap( int playerPlayed, int playerChosen, int card, int loc
             players[playerChosen].cycleDeckToHand();
         }
         players[playerPlayed].deckToHand(card);
-        return;
     } else if( location == 1){
         players[playerChosen].handToJail(card);
         if(!players[playerChosen].deckEmpty()){
             players[playerChosen].cycleDeckToHand();
         }
         players[playerPlayed].jailToHand(card);
-        return;
     }
 }
 
-void Game::printGame(){
-    for( Player p : players){
-        p.printPlayer();
-        cout << endl;
-    }
-}
 
-Observation Game::toObservation(int playerNumber){
+
+Observation Game::toObservation(int playerNumber) const{
     Observation output;
     // features
-    output.features.resize(23, 0.0f);
+    output.features.resize(23, 0.0F);
     output.features[0] = static_cast<float>(playerNumber);
     output.features[1] = static_cast<float>(getNumberOfPlayersLeft());
     output.features[2] = static_cast<float>(getMaxHealth());
@@ -311,7 +302,7 @@ void Game::applyAction(deque<int> action){
     if(infiltrating){
         if( action[infiltratingPlayer] <=13 && action[infiltratingPlayer] >=2 ){
             int location = -1;
-            for( int& j : players[infiltratingPlayer].getDeck()){
+            for(const int& j : players[infiltratingPlayer].getDeck()){
                 if( j == action[infiltratingPlayer]){
                     location = 0;
                     infiltrateSwap(infiltratingPlayer, infiltratedPlayer, action[infiltratingPlayer], 0);
@@ -319,7 +310,7 @@ void Game::applyAction(deque<int> action){
                 }
             }
             if( location != 0 ){
-                for( int& j : players[infiltratingPlayer].getJail()){
+                for(const int& j : players[infiltratingPlayer].getJail()){
                     if( j == action[infiltratingPlayer]){
                         infiltrateSwap(infiltratingPlayer, infiltratedPlayer, action[infiltratingPlayer], 1);
                         break;
@@ -413,10 +404,11 @@ void Game::applyAction(deque<int> action){
             }
         }
         deque<deque<int>> battleOutput;
-        if( battleInput.size() == 0){
+        if( battleInput.empty() ){
             war = false;
             return;
-        } else if( battleInput.size() == 1){
+        }
+        if( battleInput.size() == 1){
             battleOutput = battleInput;
             war = false; 
         } else {
@@ -425,13 +417,13 @@ void Game::applyAction(deque<int> action){
         if(battleOutput.size() > 1){
             return;
         }
-        for( int& card: players[battleOutput[0][0]].getWarPlayed()){
+        for(const int& card: players[battleOutput[0][0]].getWarPlayed()){
             battleInput.push_back({battleOutput[0][0], card});
         }
         playerWins(battleOutput[0][0], battleInput);
     }
 }
-bool Game::isWin(int player){
+bool Game::isWin(int player) const{
     for( int i = 0; i < numberOfPlayers; i++){
         if( i == player){
             if(players[i].isLose()){
@@ -445,18 +437,24 @@ bool Game::isWin(int player){
     }
     return true;
 }
-bool Game::isLose(int player){
+bool Game::isLose(int player) const{
     return players[player].isLose();
 }
-bool Game::isOver(){
+bool Game::isOver() const{
     int count = 0;
-    for( Player& p :players){
-        if(p.isLose() == true){
+    for(const Player& p :players){
+        if(p.isLose()){
             count++;
         }
     }
-    if( count >= numberOfPlayers - 1){
-        return true;
-    }
-    return false;
+    return count >= numberOfPlayers - 1;
 }
+
+/* for testing
+void Game::printGame(){
+    for( Player p : players){
+        p.printPlayer();
+        cout << endl;
+    }
+}
+*/

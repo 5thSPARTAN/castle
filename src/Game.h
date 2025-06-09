@@ -19,13 +19,14 @@ private:
     bool war;
 public:
     Game();
-    Game(int numberOfPlayers, int startingHealth, int maxHealth);
+    // numberOfPlayers, startingHealth, maxHealth
+    Game(int np, int sh, int mh);
     ~Game();
 
-    int getNumberOfPlayers();
-    int getStartingHealth();
-    int getMaxHealth();
-    int getNumberOfPlayersLeft();
+    int getNumberOfPlayers() const;
+    int getStartingHealth()const;
+    int getMaxHealth() const;
+    int getNumberOfPlayersLeft() const;
 
 
     deque<deque<int>> battle(deque<deque<int>> input);
@@ -35,16 +36,16 @@ public:
     void infiltrateSwap(int playerPlayed, int playerChosen, int card, int location);
     void playerWins(int playerNumber, deque<deque<int>> cardsPlayed);
 
-    void printGame();
-
     //for GameEnv
-    Observation toObservation(int playerNumber);
+    Observation toObservation(int playerNumber) const;
     void applyAction(deque<int> action);
-    bool isWin(int player);
-    bool isLose(int player);
-    bool isOver();
+    bool isWin(int player) const;
+    bool isLose(int player) const;
+    bool isOver() const;
     
-
+/* for testing
+    void printGame();
+*/
 };
 
 #endif

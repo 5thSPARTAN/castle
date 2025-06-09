@@ -2,9 +2,9 @@
 #include <deque>
 using namespace std;
 
-RandomPlayer::RandomPlayer(){}
+RandomPlayer::RandomPlayer() = default;
 
-RandomPlayer::~RandomPlayer(){}
+RandomPlayer::~RandomPlayer() = default;
 
 int RandomPlayer::pickAction(Observation obs){
     deque<int> trueIndices;

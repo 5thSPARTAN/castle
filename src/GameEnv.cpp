@@ -1,13 +1,10 @@
 #include "GameEnv.h"
 
-GameEnv::GameEnv(int p, int s, int m){
-    players = p;
-    startingHealth = s;
-    maxHealth = m;
+GameEnv::GameEnv(int p, int s, int m): players(p), startingHealth(s), maxHealth(m){
     game_ = Game(players, startingHealth, maxHealth);
 }
 
-GameEnv::~GameEnv(){}
+GameEnv::~GameEnv() = default;
 
 deque<Observation> GameEnv::reset(){
     game_ = Game(players, startingHealth, maxHealth);

@@ -24,26 +24,27 @@ private:
 public:
     static deque<int> shuffleDeck();
 
-    Player(int playerNumber, int health, int maxHealth);
+    // playerNumber, health, maxHealth
+    Player(int p, int h, int mh);
     ~Player();
 
-    int getPlayerNumber();
-    int getPlayerHealth();
+    int getPlayerNumber() const;
+    int getPlayerHealth() const;
 
     void damage(); // 1 damage
     void heal(); // 1 heal
-    int getHealth();
-    int getDeckSize();
-    int getJailSize();
-    int getHandSize();
+    int getHealth() const;
+    int getDeckSize() const;
+    int getJailSize() const;
+    int getHandSize() const;
 
-    bool isLose();
-    bool deckEmpty();
-    bool jailEmpty();
-    bool handEmpty();
-    bool warDiscardEmpty();
-    bool warPlayedEmpty();
-    bool handContains(int card);
+    bool isLose() const;
+    bool deckEmpty() const;
+    bool jailEmpty() const;
+    bool handEmpty() const;
+    bool warDiscardEmpty() const;
+    bool warPlayedEmpty() const;
+    bool handContains(int card) const;
 
     void cycleDeckToHand();
     void cycleHandToJail();
@@ -68,12 +69,14 @@ public:
     void war(int card);
 
     
-    deque<int> getDeck();
-    deque<int> getJail();
-    deque<int> getHand();
-    deque<int> getWarPlayed();
+    deque<int> getDeck() const;
+    deque<int> getJail() const;
+    deque<int> getHand() const;
+    deque<int> getWarPlayed() const;
 
-    void printPlayer();
+    /* for testing
+    void printPlayer() const;
+    */
 
 };
 
