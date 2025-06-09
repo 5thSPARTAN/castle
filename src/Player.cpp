@@ -1,20 +1,22 @@
 #include "Player.h"
 
-// Input player, health
-Player::Player(int p, int h, int mh){
-    playerNumber = p;
-    maxHealth = mh;
-    if( mh >= h)
-        health = h;
-    else
-        health = mh;
-    
-    deck = {2,3,4,5,6,7,8,9,10,11,12,13};
+deque<int> Player::shuffleDeck(){
+    deque<int> deck = {2,3,4,5,6,7,8,9,10,11,12,13};
     
     // shuffle deck
     random_device rd;
     mt19937 g(rd());
     shuffle(deck.begin(), deck.end(), g);
+
+    return deck;
+}
+
+// Input player, health
+Player::Player(int p, int h, int mh) : playerNumber(p), maxHealth(mh), deck(shuffleDeck()){
+    if( mh >= h)
+        health = h;
+    else
+        health = mh;
 
     for(int i = 0; i < 3; i++){
         hand.push_back(deck.back());

@@ -22,6 +22,8 @@ private:
     int maxHealth;
 
 public:
+    static deque<int> shuffleDeck();
+
     Player(int playerNumber, int health, int maxHealth);
     ~Player();
 
