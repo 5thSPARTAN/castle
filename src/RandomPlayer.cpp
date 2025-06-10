@@ -1,10 +1,6 @@
 #include "RandomPlayer.h"
 #include <deque>
-using namespace std;
 
-RandomPlayer::RandomPlayer() = default;
-
-RandomPlayer::~RandomPlayer() = default;
 
 int RandomPlayer::pickAction(Observation obs){
     deque<int> trueIndices;
@@ -16,7 +12,7 @@ int RandomPlayer::pickAction(Observation obs){
     
     random_device rd;
     mt19937 gen(rd());
-    uniform_int_distribution<> dist(0, trueIndices.size() -1);
+    uniform_int_distribution<> dist(0, static_cast<int>(trueIndices.size() -1));
 
     return trueIndices[dist(gen)];
 }

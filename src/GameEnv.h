@@ -14,6 +14,6 @@ public:
 
 
     deque<Observation> reset();
-    tuple<deque<Observation>, deque<float>, bool> step(deque<int> action);
+    tuple<deque<Observation>, deque<float>, bool> step(deque<int>& action);
 
 };

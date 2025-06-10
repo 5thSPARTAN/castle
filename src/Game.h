@@ -18,10 +18,10 @@ private:
     int extractedCardLocation;
     bool war;
 public:
-    Game();
+    Game() = default;
     // numberOfPlayers, startingHealth, maxHealth
     Game(int np, int sh, int mh);
-    ~Game();
+    ~Game() = default;
 
     int getNumberOfPlayers() const;
     int getStartingHealth()const;
@@ -29,7 +29,7 @@ public:
     int getNumberOfPlayersLeft() const;
 
 
-    deque<deque<int>> battle(deque<deque<int>> input);
+    deque<deque<int>> battle(deque<deque<int>>& input);
     
     // infiltrator specific functions
     deque<int> infiltrate( int playerPlayed, int playerChosen); //output card #, location (deck(0), jail(1), hand(2))

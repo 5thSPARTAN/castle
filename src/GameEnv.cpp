@@ -16,7 +16,7 @@ deque<Observation> GameEnv::reset(){
     return obs;
 }
 
-tuple<deque<Observation>, deque<float>, bool> GameEnv::step(deque<int> action){
+tuple<deque<Observation>, deque<float>, bool> GameEnv::step(deque<int>& action){
     game_.applyAction(action);
     deque<Observation> obs;
     obs.push_back(game_.toObservation(0));

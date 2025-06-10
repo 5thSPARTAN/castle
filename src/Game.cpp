@@ -1,7 +1,5 @@
 #include "Game.h"
 
-Game::Game() = default;
-
 Game::Game(int np, int sh, int mh): 
     numberOfPlayers(np), 
     startingHealth(sh), 
@@ -14,11 +12,9 @@ Game::Game(int np, int sh, int mh):
     war(false)
     {    
     for( int i = 0; i < numberOfPlayers; i++){
-        players.push_back(Player(i, startingHealth, maxHealth));
+        players.emplace_back(i, startingHealth, maxHealth);
     }
 }
-
-Game::~Game() = default;
 
 int Game::getNumberOfPlayers() const{
     return numberOfPlayers;
@@ -40,7 +36,7 @@ int Game::getNumberOfPlayersLeft() const{
 }
 
 
-deque<deque<int>> Game::battle(deque<deque<int>> input){
+deque<deque<int>> Game::battle(deque<deque<int>>& input){
     deque<deque<int>> winners = findWinners(input);
     if( winners.size() > 1){
         // war has occured
@@ -98,7 +94,7 @@ void Game::playerWins(int playerNumber, deque<deque<int>> cardsPlayed){
                     }
                 }
             }
-            for(int& wc : winningCards){
+            for(const int& wc : winningCards){
                 p.loseToCard(wc);
             }
         }

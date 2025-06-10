@@ -1,8 +1,8 @@
+#include "Observation.h"
+#include "GameEnv.h"
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
-#include "Observation.h"
 
-#include "GameEnv.h"
 
 namespace py = pybind11;
 

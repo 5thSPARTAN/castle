@@ -4,13 +4,15 @@
 #include "Observation.h"
 #include <random>
 
+using namespace std;
+
 class RandomPlayer{
 private:
 
 public:
-    RandomPlayer();
-    ~RandomPlayer();
-    int pickAction(Observation);
+    RandomPlayer() = default;
+    ~RandomPlayer() = default;
+    static int pickAction(Observation);
 };
 
 #endif
