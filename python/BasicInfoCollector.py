@@ -19,7 +19,7 @@ def is_power_of_10(n):
 
 
 def main():
-    NUMBER_OF_GAMES = 1000
+    NUMBER_OF_GAMES = 1000000000
     NUMBER_OF_PLAYERS = 4
     STARTING_HEALTH = 5
     MAX_HEALTH = 7
