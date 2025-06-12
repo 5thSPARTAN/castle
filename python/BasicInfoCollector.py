@@ -4,6 +4,7 @@ sys.path.append("../build/")
 from game_env import GameEnv
 from BasicInfoUtils import determine_battle_winner
 from BasicInfoUtils import select_random_action
+from BasicInfoUtils import always_steal_random_selector
 from BasicInfoUtils import card_from_action_mask_index
 from BasicInfoUtils import create_graph
 
@@ -12,21 +13,24 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-def is_power_of_10(n):
-    while n >= 10 and n % 10 == 0:
-        n //= 10
+def is_power_of_100(n):
+    while n >= 100 and n % 100 == 0:
+        n //= 100
     return n == 1
 
 
-def main():
-    NUMBER_OF_GAMES = 1000000
-    NUMBER_OF_PLAYERS = 4
-    STARTING_HEALTH = 5
-    MAX_HEALTH = 7
-
-    SPECIAL_TRACKING = 10
-    SPECIAL_TRACKING_STOLEN = 1
-
+def basic_info_collector(model_0,
+                         model_1,
+                         model_2,
+                         model_3,
+                         NUMBER_OF_GAMES,
+                         NUMBER_OF_PLAYERS,
+                         STARTING_HEALTH,
+                         MAX_HEALTH,
+                         SPECIAL_TRACKING,
+                         SPECIAL_TRACKING_STOLEN,
+                         NAME
+                         ):
 
     env = GameEnv(NUMBER_OF_PLAYERS, STARTING_HEALTH, MAX_HEALTH)
 
@@ -73,10 +77,10 @@ def main():
         obs = env.reset()
         game_end = False
         while game_end == False:
-            action_list = [ select_random_action(obs[0].actionMask), 
-                            select_random_action(obs[1].actionMask),
-                            select_random_action(obs[2].actionMask),
-                            select_random_action(obs[3].actionMask)
+            action_list = [ model_0(obs[0].actionMask), 
+                            model_1(obs[1].actionMask),
+                            model_2(obs[2].actionMask),
+                            model_3(obs[3].actionMask)
                             ]
             
             # determine what cards won battle
@@ -143,7 +147,7 @@ def main():
                 
                 game_length.append(turn_count)
 
-        if is_power_of_10(game_number + 1):
+        if is_power_of_100(game_number + 1):
             print(f"{game_number + 1} games completed")
             create_graph(winning_cards, 
                 game_length, 
@@ -154,7 +158,8 @@ def main():
                 cards_stolen_by_losers_3d,
                 game_number + 1,
                 SPECIAL_TRACKING,
-                SPECIAL_TRACKING_STOLEN)
+                SPECIAL_TRACKING_STOLEN,
+                NAME)
     # create_graph(winning_cards, 
     #     game_length, 
     #     total_wins, 
@@ -165,6 +170,35 @@ def main():
     #     game_number + 1,
     #     SPECIAL_TRACKING,
     #     SPECIAL_TRACKING_STOLEN)
+
+def main():
+    NUMBER_OF_GAMES = 1000000
+    NUMBER_OF_PLAYERS = 4
+    STARTING_HEALTH = 5
+    MAX_HEALTH = 7
+
+    SPECIAL_TRACKING = 10
+    SPECIAL_TRACKING_STOLEN = 1
+
+
+    model_0 = model_1 = model_2 = model_3 = select_random_action
+    NAME = "4_RANDOM"
+    basic_info_collector(model_0,model_1,model_2,model_3,NUMBER_OF_GAMES,NUMBER_OF_PLAYERS,STARTING_HEALTH,MAX_HEALTH,SPECIAL_TRACKING,SPECIAL_TRACKING_STOLEN,NAME)
+
+    model_0 = model_1 = model_2 = model_3 = always_steal_random_selector
+    NAME = "4_ALWAYS_STEAL_RANDOM"
+    basic_info_collector(model_0,model_1,model_2,model_3,NUMBER_OF_GAMES,NUMBER_OF_PLAYERS,STARTING_HEALTH,MAX_HEALTH,SPECIAL_TRACKING,SPECIAL_TRACKING_STOLEN,NAME)
+
+    model_0 = model_1 = always_steal_random_selector
+    model_2 = model_3 = select_random_action
+    NAME = "2_ALWAYS_STEAL_RANDOM_2_RANDOM"
+    basic_info_collector(model_0,model_1,model_2,model_3,NUMBER_OF_GAMES,NUMBER_OF_PLAYERS,STARTING_HEALTH,MAX_HEALTH,SPECIAL_TRACKING,SPECIAL_TRACKING_STOLEN,NAME)
+
+    model_0 = always_steal_random_selector
+    model_1 = model_2 = model_3 = select_random_action
+    NAME = "1_ALWAYS_STEAL_RANDOM_3_RANDOM"
+    basic_info_collector(model_0,model_1,model_2,model_3,NUMBER_OF_GAMES,NUMBER_OF_PLAYERS,STARTING_HEALTH,MAX_HEALTH,SPECIAL_TRACKING,SPECIAL_TRACKING_STOLEN,NAME)
+
 
 if __name__ == "__main__":
     main()

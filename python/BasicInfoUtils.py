@@ -13,6 +13,17 @@ def select_random_action( action_mask ):
         return random.choice(true_indicies)
     return -1
 
+def always_steal_random_selector( action_mask ):
+    true_indicies = []
+    for i in range(len(action_mask)):
+        if action_mask[i] == True:
+            if i != 1:
+                true_indicies.append(i)
+
+    if len(true_indicies):
+        return random.choice(true_indicies)
+    return -1
+
 def holistic_action_selector( action_mask ):
     true_indicies = []
     for i in range(len(action_mask)):
@@ -55,7 +66,8 @@ def create_graph(winning_cards,
                   cards_stolen_by_losers_3d,
                   game_number,
                   SPECIAL_TRACKING,
-                  SPECIAL_TRACKING_STOLEN):
+                  SPECIAL_TRACKING_STOLEN,
+                  MODEL_NAME):
 
     fig, axs = plt.subplots(5,3, figsize=(16,12))
 
@@ -367,5 +379,5 @@ def create_graph(winning_cards,
     # -----------------------------------------------------------------------------------------------------------
 
     plt.tight_layout()
-    fig.savefig(f"../graphs/Basic_Info:_RANDOM_{game_number}_TESTS.png", dpi=300)
+    fig.savefig(f"../graphs/Basic_Info:_{MODEL_NAME}_{game_number}_TESTS.png", dpi=300)
     #plt.show()
