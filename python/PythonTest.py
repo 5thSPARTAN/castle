@@ -2,7 +2,7 @@ import sys
 sys.path.append("../build/")
 
 from game_env import GameEnv
-from RandomPlayer import select_random_action 
+from python.BasicInfoUtils import select_random_action 
 
 from collections import deque
 
