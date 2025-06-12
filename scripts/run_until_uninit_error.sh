@@ -8,7 +8,6 @@ i=0
 while true; do
     clear
     echo "🔁 Run #$i"
-
     valgrind --leak-check=full --track-origins=yes --log-file="$VALGRIND_LOG" $PROGRAM $ARGS
    if [ $EXIT_CODE -ne 0 ]; then
 	echo "Valground found an error on run $i"

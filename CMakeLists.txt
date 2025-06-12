@@ -16,3 +16,7 @@ file(GLOB HEADERS "./src/*.h")
 
 # create a python module
 pybind11_add_module(game_env ${SOURCES})
+
+add_executable(testCastle ${SOURCES})
+
+target_link_libraries(testCastle PRIVATE pybind11::module)
