@@ -6,6 +6,7 @@ project(Castle)
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_BUILD_TYPE RelWithDebInfo)
 
 # Find Python interpreter, libraries, and headers
 find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
@@ -19,6 +20,7 @@ file(GLOB HEADERS "./src/*.h")
 
 # create a python module
 pybind11_add_module(game_env ${SOURCES})
+target_compile_options(game_env PRIVATE -g)
 
 add_executable(testCastle ${SOURCES})
 

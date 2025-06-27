@@ -99,3 +99,7 @@ pybind11Targets.cmake
 /docs/_build/*
 .ipynb_checkpoints/
 tests/main.cpp
+
+# from perf
+python/perf.data
+perf.data
